@@ -22,25 +22,33 @@ namespace Loginn
         SqlConnection con = new SqlConnection("Server=OWEN_LAPTOP;Database=UsuariosDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True;");
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            con.Open();
-            string consulta = "select * from UsuariosDB where UserName= '"+txtUsuario.Text+"', and Password= '"+txtPassword+"'";
-            SqlCommand comm = new SqlCommand(consulta, con);
-            SqlDataReader lector;
-            lector = comm.ExecuteReader();
-
-            if(lector.HasRows==true) 
+            try
             {
-                MessageBox.Show("Inicio de sesión exitoso");
+                con.Open();
+                string consulta = "select * from UsuariosDB where UserName= '" + txtUsuario.Text + "', and Password= '" + txtPassword + "'";
+                SqlCommand comm = new SqlCommand(consulta, con);
+                SqlDataReader lector;
+                lector = comm.ExecuteReader();
 
-                frmNoImporta frm2 = new frmNoImporta();
-                this.Hide();
-                frm2.Show();
+                if (lector.HasRows == true)
+                {
+                    MessageBox.Show("Inicio de sesión exitoso");
+
+                    frmNoImporta frm2 = new frmNoImporta();
+                    this.Hide();
+                    frm2.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Datos incorrectos, ingreselos de nuevo");
+                }
+                con.Close();
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("Datos incorrectos, ingreselos de nuevo");
+
+                throw;
             }
-            con.Close();
         }
     }
 }
